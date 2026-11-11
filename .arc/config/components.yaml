@@ -1,0 +1,22 @@
+version: 1
+components:
+  comp_brown_field_proj_c_chore_002_define_architecture:
+    name: Brown Field Proj C Chore 002 Define Architecture
+    kind: library
+    directory: .
+  comp_mkdocs:
+    name: Mkdocs
+    kind: library
+    directory: docs/mkdocs
+  comp_astyle:
+    name: Astyle
+    kind: library
+    directory: tools/astyle
+  comp_generate_natvis:
+    name: Generate Natvis
+    kind: library
+    directory: tools/generate_natvis
+  comp_serve_header:
+    name: Serve Header
+    kind: library
+    directory: tools/serve_header
