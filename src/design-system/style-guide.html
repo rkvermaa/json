@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en" data-md-color-scheme="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style guide — JSON for Modern C++</title>
+<link rel="stylesheet" href="../../docs/mkdocs/docs/css/brand.css">
+<link rel="stylesheet" href="prototype-utils.css">
+<style>
+    /* style-guide-only rules: page chrome around the samples */
+    .sg-section { padding-block: 2rem; border-top: thin solid var(--md-default-fg-color-lightest, color-mix(in srgb, var(--md-default-fg-color) 12%, transparent)); }
+    .sg-section > h2 { margin-bottom: 1rem; }
+    .sg-section h3 { margin-top: 1.5rem; }
+    .sg-note { margin: 0; font-size: .875rem; }
+    .sg-label { margin: 0 0 .5rem; font-size: .75rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--md-default-fg-color-light, color-mix(in srgb, var(--md-default-fg-color) 75%, transparent)); }
+    .sg-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
+    .sg-swatches li { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+    .sg-swatches i { flex: none; width: 3rem; height: 3rem; border: thin solid var(--md-default-fg-color-lightest, color-mix(in srgb, var(--md-default-fg-color) 12%, transparent)); border-radius: .375rem; }
+    .sg-swatches div { min-width: 0; font-size: .8125rem; line-height: 1.35; overflow-wrap: anywhere; }
+    .sg-swatches code { display: block; font-weight: 600; }
+    .sg-panel { padding: 1.25rem; border: thin solid var(--md-default-fg-color-lightest, color-mix(in srgb, var(--md-default-fg-color) 12%, transparent)); border-radius: .375rem; background-color: var(--md-default-bg-color, Canvas); color: var(--md-default-fg-color); }
+    .sg-frame { position: relative; min-height: 24rem; overflow: hidden; transform: translate(0); border: thin dashed var(--md-default-fg-color-lighter, color-mix(in srgb, var(--md-default-fg-color) 50%, transparent)); border-radius: .375rem; padding: 1rem; }
+    .sg-frame-short { min-height: 8rem; }
+    .sg-box { padding: .5rem .75rem; border-radius: .25rem; background-color: var(--nj-blue-soft); color: var(--md-accent-fg-color); font-size: .875rem; text-align: center; }
+    .sg-pad-menu { min-height: 15rem; }
+    .sg-pad-tip { padding-top: 3rem; }
+    .sg-icon { display: inline-block; width: .9rem; height: .9rem; background-color: currentColor; -webkit-mask: var(--nj-external-icon) no-repeat center / contain; mask: var(--nj-external-icon) no-repeat center / contain; }
+    .sg-hue::after { counter-reset: hue var(--md-hue); content: counter(hue); }
+    .sg-gradient { height: 3rem; border-radius: .375rem; }
+    .sg-line { height: 0; border-top: .25rem solid var(--fg-line); }
+    .sg-hero-sample { padding: 1rem; border-radius: .375rem; }
+    .sg-hero-sample .sg-gradient { background-image: linear-gradient(160deg, var(--md-primary-fg-color), var(--nj-hero-to)); }
+    .sg-veil { background-image: var(--nj-veil); }
+    .sg-header-sample { padding: 1rem; border-radius: .375rem; }
+    .sg-font-sample { margin: 0 0 .5rem; font-size: 1.5rem; }
+</style>
+</head>
+<body>
+<div class="container stack-lg" style="padding-block: 2rem 4rem;">
+
+<header class="stack-sm">
+    <p class="sg-label">JSON for Modern C++ — design system</p>
+    <h1>Style guide</h1>
+    <p class="sg-note">Adopted from the repository, unchanged: the fonts in <code>docs/mkdocs/docs/css/fonts</code> and the tokens in <code>docs/mkdocs/docs/css/brand.css</code> (linked from this page, not copied). <code>prototype-utils.css</code> builds the components from those tokens only. The figure stylesheets (<code>fig-*.css</code>) style individual diagrams and are not part of the design system. The app shell every screen sits in is in <a href="app-shell.html"><code>app-shell.html</code></a>.</p>
+    <p class="sg-note text-muted">Token names are shown as supplied. Where a neutral is marked <strong>*</strong> its name has one dash before the variant (for example <code>--md-default-fg-color-lighter</code>), while <code>brand.css</code> defines it with two dashes; the utilities therefore use it with a colour-mix fallback, and its swatch below is the approximation, not the exact value.</p>
+</header>
+
+<!-- ========================== TOKENS ========================== -->
+<section class="sg-section" id="tokens">
+    <h2>Design tokens</h2>
+    <p class="sg-note text-muted">Light scheme (<code>default</code>) with the dark (<code>slate</code>) value after the slash.</p>
+
+    <h3>Brand colours</h3>
+    <ul class="sg-swatches">
+        <li><i style="background: var(--nj-blue)"></i><div><code>--nj-blue</code>#1747a6 / #7aa7f5 — action and link colour</div></li>
+        <li><i style="background: var(--nj-blue-deep)"></i><div><code>--nj-blue-deep</code>#10357d / #a9c6f8 — hover and accent</div></li>
+        <li><i style="background: var(--nj-blue-soft)"></i><div><code>--nj-blue-soft</code>#eaf1fd / #16233b — soft fill</div></li>
+        <li><i style="background: var(--nj-band)"></i><div><code>--nj-band</code>#1747a6 / #173e8c — header band</div></li>
+        <li><i style="background: var(--nj-red)"></i><div><code>--nj-red</code>#d93a3f / #f06a6e — danger</div></li>
+        <li><i style="background: var(--nj-red-soft)"></i><div><code>--nj-red-soft</code>#fdeced / #3a1c1e — danger fill</div></li>
+        <li><i style="background: var(--nj-string)"></i><div><code>--nj-string</code>#b4322a / #f08a7e — error text</div></li>
+        <li><i style="background: var(--nj-comment)"></i><div><code>--nj-comment</code>#646d7a / #8b929e — code comments</div></li>
+    </ul>
+
+    <h3>Primary, accent and links</h3>
+    <ul class="sg-swatches">
+        <li><i style="background: var(--md-primary-fg-color)"></i><div><code>--md-primary-fg-color</code>= <code>--nj-band</code></div></li>
+        <li><i style="background: var(--md-primary-fg-color-light, color-mix(in srgb, var(--md-primary-fg-color) 88%, white))"></i><div><code>--md-primary-fg-color-light</code>* #1d55c4 / #163f93</div></li>
+        <li><i style="background: var(--md-primary-fg-color-dark, color-mix(in srgb, var(--md-primary-fg-color) 82%, black))"></i><div><code>--md-primary-fg-color-dark</code>* #10357d / #0c2556</div></li>
+        <li><i style="background: var(--md-accent-fg-color)"></i><div><code>--md-accent-fg-color</code>= <code>--nj-blue-deep</code></div></li>
+        <li><i style="background: var(--md-accent-fg-color-transparent, color-mix(in srgb, var(--nj-blue) 10%, transparent))"></i><div><code>--md-accent-fg-color-transparent</code>* blue at 10% / 12%</div></li>
+        <li><i style="background: var(--md-typeset-a-color)"></i><div><code>--md-typeset-a-color</code>= <code>--nj-blue</code> — <a href="#tokens">link sample</a></div></li>
+    </ul>
+
+    <h3>Text, surfaces and code</h3>
+    <ul class="sg-swatches">
+        <li><i style="background: var(--md-default-fg-color)"></i><div><code>--md-default-fg-color</code>#0f1419 / #f2f4f7</div></li>
+        <li><i style="background: var(--md-default-fg-color-light, color-mix(in srgb, var(--md-default-fg-color) 75%, transparent))"></i><div><code>--md-default-fg-color-light</code>* #4a515c / #b3b9c4</div></li>
+        <li><i style="background: var(--md-default-fg-color-lighter, color-mix(in srgb, var(--md-default-fg-color) 50%, transparent))"></i><div><code>--md-default-fg-color-lighter</code>* #8a919c / #7b828e</div></li>
+        <li><i style="background: var(--md-default-fg-color-lightest, color-mix(in srgb, var(--md-default-fg-color) 12%, transparent))"></i><div><code>--md-default-fg-color-lightest</code>* #e3e6eb / #272c36</div></li>
+        <li><i style="background: var(--md-typeset-color)"></i><div><code>--md-typeset-color</code>#0f1419 / #f2f4f7</div></li>
+        <li><i style="background: var(--md-code-bg-color)"></i><div><code>--md-code-bg-color</code>#f5f7fa / #171b23</div></li>
+        <li><i style="background: var(--md-code-fg-color)"></i><div><code>--md-code-fg-color</code>#0f1419 / #f2f4f7</div></li>
+        <li><i style="background: var(--md-footer-bg-color)"></i><div><code>--md-footer-bg-color</code>#0d2a66 / #0b0e13</div></li>
+        <li><i style="background: var(--md-footer-bg-color-dark, color-mix(in srgb, var(--md-footer-bg-color) 75%, black))"></i><div><code>--md-footer-bg-color-dark</code>* #0a2152 / #08090d</div></li>
+    </ul>
+    <p class="sg-note text-muted" style="margin-top: .75rem;"><code>--md-default-bg-color</code> and <code>--md-hue</code> are defined by the dark scheme only (#0f1218 and 220); the light page uses the system canvas. They are shown in the dark panel below.</p>
+
+    <h3>Syntax colours</h3>
+    <ul class="sg-swatches">
+        <li><i style="background: var(--nj-hl-keyword)"></i><div><code>--nj-hl-keyword</code>#1747a6 / #7aa7f5</div></li>
+        <li><i style="background: var(--nj-hl-type)"></i><div><code>--nj-hl-type</code>#0d6e72 / #4fd1c5</div></li>
+        <li><i style="background: var(--nj-hl-function)"></i><div><code>--nj-hl-function</code>#6b3fb8 / #c4a3ff</div></li>
+        <li><i style="background: var(--nj-hl-string)"></i><div><code>--nj-hl-string</code>#23793a / #7ed491</div></li>
+        <li><i style="background: var(--nj-hl-escape)"></i><div><code>--nj-hl-escape</code>#0f5d2a / #b2ecc0</div></li>
+        <li><i style="background: var(--nj-hl-key)"></i><div><code>--nj-hl-key</code>#10357d / #a9c6f8</div></li>
+        <li><i style="background: var(--nj-hl-number)"></i><div><code>--nj-hl-number</code>#b04a07 / #f5a65b</div></li>
+        <li><i style="background: var(--nj-hl-preproc)"></i><div><code>--nj-hl-preproc</code>#a3247a / #f48fc8</div></li>
+    </ul>
+    <pre class="code-block" style="margin-top: 1rem;"><code><span class="p">#include</span> &lt;nlohmann/json.hpp&gt;
+<span class="c">// parse a document and read a value</span>
+<span class="k">auto</span> j = <span class="t">nlohmann::json</span>::<span class="f">parse</span>(<span class="s">R"({"answer": 42})"</span>);
+<span class="k">int</span> answer = j[<span class="s">"answer"</span>].<span class="f">get</span>&lt;<span class="k">int</span>&gt;(); <span class="c">// <span class="n">42</span></span></code></pre>
+
+    <h3>Fonts</h3>
+    <div class="stack-sm">
+        <p class="sg-font-sample" style="font-family: var(--md-text-font), sans-serif;"><code>--md-text-font</code> Inter — Sphinx of black quartz, judge my vow</p>
+        <p class="sg-font-sample" style="font-family: var(--md-text-font), sans-serif; font-style: italic;">Inter Italic — The quick brown fox jumps over the lazy dog</p>
+        <p class="sg-font-sample" style="font-family: var(--md-code-font), monospace;"><code style="font-size: inherit;">--md-code-font</code> JetBrains Mono — {"answer": 42}</p>
+        <p class="sg-font-sample" style="font-family: var(--md-code-font), monospace; font-style: italic;">JetBrains Mono Italic — nlohmann::json</p>
+        <p class="sg-note text-muted">Brand assets (shown from their original location, never copied):
+            <a href="../../docs/mkdocs/docs/css/fonts/Inter.woff2"><code>fonts/Inter.woff2</code></a>,
+            <a href="../../docs/mkdocs/docs/css/fonts/Inter-Italic.woff2"><code>fonts/Inter-Italic.woff2</code></a>,
+            <a href="../../docs/mkdocs/docs/css/fonts/JetBrainsMono.woff2"><code>fonts/JetBrainsMono.woff2</code></a>,
+            <a href="../../docs/mkdocs/docs/css/fonts/JetBrainsMono-Italic.woff2"><code>fonts/JetBrainsMono-Italic.woff2</code></a>.</p>
+    </div>
+
+    <h3>Header band, hero and figures</h3>
+    <div class="grid grid-2">
+        <div class="md-header sg-header-sample">
+            <p class="sg-label" style="color: var(--md-mermaid-sequence-number-fg-color);"><code>--nj-veil</code> over the band</p>
+            <div class="sg-gradient sg-veil"></div>
+        </div>
+        <div class="nj-hero sg-hero-sample">
+            <p class="sg-label" style="color: var(--md-mermaid-sequence-number-fg-color);"><code>--nj-hero-to</code> — hero gradient end</p>
+            <div class="sg-gradient" style="background-image: none; background-color: var(--nj-hero-to);"></div>
+        </div>
+    </div>
+    <div class="nj-fig" style="margin-top: 1rem;">
+        <ul class="sg-swatches">
+            <li><i style="background: var(--cb-os)"></i><div><code>--cb-os</code>#4eb05a / #7ee787</div></li>
+            <li><i style="background: var(--cb-oe)"></i><div><code>--cb-oe</code>#1a6b34 / #2ea043</div></li>
+            <li><i style="background: var(--cb-k)"></i><div><code>--cb-k</code>#e5534b / #ff7b72</div></li>
+            <li><i style="background: var(--cb-as)"></i><div><code>--cb-as</code>#f0c000 / #f2cc60</div></li>
+            <li><i style="background: var(--cb-ae)"></i><div><code>--cb-ae</code>#b07d00 / #c69026</div></li>
+            <li><i style="background: var(--cb-v)"></i><div><code>--cb-v</code>#1f6fd1 / #58a6ff</div></li>
+            <li><i style="background: var(--fg-line)"></i><div><code>--fg-line</code>mixed from the text and surface colours</div></li>
+        </ul>
+        <div class="sg-line" style="margin-top: .75rem;"></div>
+    </div>
+    <p class="sg-note" style="margin-top: 1rem;"><code>--nj-external-icon</code> — the external-link mark placed before outbound links:
+        <a href="#tokens"><span class="sg-icon" aria-hidden="true"></span> nlohmann/json</a></p>
+
+    <h3>Diagram colours (Mermaid)</h3>
+    <ul class="sg-swatches">
+        <li><i style="background: var(--md-mermaid-edge-color)"></i><div><code>--md-mermaid-edge-color</code>edges, grey</div></li>
+        <li><i style="background: var(--md-mermaid-node-bg-color, Canvas)"></i><div><code>--md-mermaid-node-bg-color</code>node fill = page surface</div></li>
+        <li><i style="background: var(--md-mermaid-node-fg-color)"></i><div><code>--md-mermaid-node-fg-color</code>node outline = <code>--nj-blue</code></div></li>
+        <li><i style="background: var(--md-mermaid-label-bg-color, Canvas)"></i><div><code>--md-mermaid-label-bg-color</code>label fill = page surface</div></li>
+        <li><i style="background: var(--md-mermaid-label-fg-color)"></i><div><code>--md-mermaid-label-fg-color</code>label text</div></li>
+        <li><i style="background: var(--md-mermaid-sequence-actor-bg-color)"></i><div><code>--md-mermaid-sequence-actor-bg-color</code>actor = <code>--nj-blue-soft</code></div></li>
+        <li><i style="background: var(--md-mermaid-sequence-actor-line-color)"></i><div><code>--md-mermaid-sequence-actor-line-color</code>actor line</div></li>
+        <li><i style="background: var(--md-mermaid-sequence-note-bg-color)"></i><div><code>--md-mermaid-sequence-note-bg-color</code>note = code panel</div></li>
+        <li><i style="background: var(--md-mermaid-sequence-note-border-color)"></i><div><code>--md-mermaid-sequence-note-border-color</code>note border</div></li>
+        <li><i style="background: var(--md-mermaid-sequence-number-fg-color)"></i><div><code>--md-mermaid-sequence-number-fg-color</code>#fff — also text on the band</div></li>
+    </ul>
+    <p class="sg-note" style="margin-top: .75rem; font-family: var(--md-mermaid-font-family);"><code>--md-mermaid-font-family</code> — diagram text uses the text font (sample set in it).</p>
+
+    <h3>Dark scheme</h3>
+    <div class="sg-panel stack" data-md-color-scheme="slate">
+        <ul class="sg-swatches">
+            <li><i style="background: var(--md-default-bg-color)"></i><div><code>--md-default-bg-color</code>#0f1218 — dark page surface</div></li>
+            <li><i style="background: var(--nj-blue)"></i><div><code>--nj-blue</code></div></li>
+            <li><i style="background: var(--nj-blue-soft)"></i><div><code>--nj-blue-soft</code></div></li>
+            <li><i style="background: var(--nj-red)"></i><div><code>--nj-red</code></div></li>
+            <li><i style="background: var(--md-code-bg-color)"></i><div><code>--md-code-bg-color</code></div></li>
+            <li><i style="background: var(--md-footer-bg-color)"></i><div><code>--md-footer-bg-color</code></div></li>
+        </ul>
+        <p class="sg-note"><code>--md-hue</code> = <strong class="sg-hue"></strong></p>
+        <div class="cluster">
+            <button class="btn btn-primary" type="button">Primary</button>
+            <button class="btn btn-secondary" type="button">Secondary</button>
+            <button class="btn btn-ghost" type="button">Ghost</button>
+            <button class="btn btn-danger" type="button">Danger</button>
+            <span class="badge badge-success">Success</span>
+            <span class="badge badge-warning">Warning</span>
+            <span class="badge badge-danger">Danger</span>
+        </div>
+        <div class="alert alert-info"><p class="alert-title">Dark scheme</p><p>Components follow the scheme through the tokens alone.</p></div>
+        <pre class="code-block"><code><span class="k">auto</span> j = <span class="t">json</span>::<span class="f">parse</span>(<span class="s">"[1, 2, 3]"</span>); <span class="c">// <span class="n">3</span> items</span></code></pre>
+    </div>
+</section>
+
+<!-- ========================== TYPOGRAPHY AND LAYOUT ========================== -->
+<section class="sg-section" id="layout">
+    <h2>Typography and layout</h2>
+    <div class="stack">
+        <div>
+            <h1>Heading 1 — bold, tight tracking</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <p>Body text in Inter at 17 px. A <a href="#layout">link</a>, <code>inline_code</code> in JetBrains Mono, and <kbd>kbd</kbd>.</p>
+            <p class="text-muted">.text-muted — secondary text.</p>
+            <p class="text-small">.text-small — captions and notes.</p>
+            <p class="text-mono">.text-mono — identifiers and versions: v3.12.0</p>
+            <p class="text-muted">.visually-hidden hides a label from the eye but keeps it for screen readers (nothing to see here).<span class="visually-hidden">Hidden label</span></p>
+        </div>
+
+        <div>
+            <p class="sg-label">.container — page column (up to 72rem), this page is one</p>
+            <p class="sg-label">.stack, .stack-sm, .stack-lg — vertical rhythm</p>
+            <div class="grid grid-3">
+                <div class="stack stack-sm"><div class="sg-box">.stack-sm</div><div class="sg-box">item</div><div class="sg-box">item</div></div>
+                <div class="stack"><div class="sg-box">.stack</div><div class="sg-box">item</div><div class="sg-box">item</div></div>
+                <div class="stack stack-lg"><div class="sg-box">.stack-lg</div><div class="sg-box">item</div><div class="sg-box">item</div></div>
+            </div>
+        </div>
+        <div class="stack stack-sm">
+            <p class="sg-label">.cluster, .cluster-sm, .cluster-lg, .cluster-between, .cluster-end</p>
+            <div class="cluster cluster-sm"><span class="sg-box">.cluster-sm</span><span class="sg-box">item</span><span class="sg-box">item</span></div>
+            <div class="cluster"><span class="sg-box">.cluster</span><span class="sg-box">item</span><span class="sg-box">item</span></div>
+            <div class="cluster cluster-lg"><span class="sg-box">.cluster-lg</span><span class="sg-box">item</span><span class="sg-box">item</span></div>
+            <div class="cluster cluster-between"><span class="sg-box">.cluster-between</span><span class="sg-box">item</span></div>
+            <div class="cluster cluster-end"><span class="sg-box">.cluster-end</span><span class="sg-box">item</span></div>
+        </div>
+        <div class="stack stack-sm">
+            <p class="sg-label">.grid (auto columns), .grid-2, .grid-3</p>
+            <div class="grid"><div class="sg-box">.grid</div><div class="sg-box">cell</div><div class="sg-box">cell</div><div class="sg-box">cell</div></div>
+            <div class="grid grid-2"><div class="sg-box">.grid-2</div><div class="sg-box">cell</div></div>
+            <div class="grid grid-3"><div class="sg-box">.grid-3</div><div class="sg-box">cell</div><div class="sg-box">cell</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================== BUTTONS ========================== -->
+<section class="sg-section" id="buttons">
+    <h2>Buttons</h2>
+    <div class="stack">
+        <div class="cluster">
+            <button class="btn btn-primary" type="button">Primary</button>
+            <button class="btn btn-secondary" type="button">Secondary</button>
+            <button class="btn btn-ghost" type="button">Ghost</button>
+            <button class="btn btn-danger" type="button">Danger</button>
+        </div>
+        <div><p class="sg-label">Disabled</p>
+        <div class="cluster">
+            <button class="btn btn-primary" type="button" disabled>Primary</button>
+            <button class="btn btn-secondary" type="button" disabled>Secondary</button>
+            <button class="btn btn-ghost" type="button" disabled>Ghost</button>
+            <button class="btn btn-danger" type="button" disabled>Danger</button>
+        </div></div>
+        <div><p class="sg-label">Sizes: .btn-sm, default, .btn-lg</p>
+        <div class="cluster">
+            <button class="btn btn-primary btn-sm" type="button">Small</button>
+            <button class="btn btn-primary" type="button">Default</button>
+            <button class="btn btn-primary btn-lg" type="button">Large</button>
+        </div></div>
+        <div><p class="sg-label">Icon-only: .btn-icon (with .btn-sm / .btn-lg), always with an accessible name</p>
+        <div class="cluster">
+            <button class="btn btn-secondary btn-icon btn-sm" type="button" aria-label="Open external"><span class="sg-icon" aria-hidden="true"></span></button>
+            <button class="btn btn-secondary btn-icon" type="button" aria-label="Open external"><span class="sg-icon" aria-hidden="true"></span></button>
+            <button class="btn btn-secondary btn-icon btn-lg" type="button" aria-label="Open external"><span class="sg-icon" aria-hidden="true"></span></button>
+            <button class="btn btn-ghost btn-icon" type="button" aria-label="Open external" disabled><span class="sg-icon" aria-hidden="true"></span></button>
+        </div></div>
+        <p class="sg-note text-muted">Focus (<code>:focus-visible</code>) draws a medium ring in <code>--nj-blue</code> (<code>--nj-red</code> on danger); tab to a button to see it.</p>
+    </div>
+</section>
+
+<!-- ========================== FORMS ========================== -->
+<section class="sg-section" id="forms">
+    <h2>Form controls</h2>
+    <div class="grid grid-2">
+        <div class="field">
+            <label for="sg-in">Input</label>
+            <input id="sg-in" class="input" type="text" placeholder="Placeholder">
+            <p class="field-hint">Hint text explains the expected value.</p>
+        </div>
+        <div class="field is-invalid">
+            <label for="sg-in-err">Input with error</label>
+            <input id="sg-in-err" class="input is-invalid" type="text" value="not-a-version" aria-invalid="true" aria-describedby="sg-in-err-msg">
+            <p class="field-hint">This hint is replaced by the error.</p>
+            <p id="sg-in-err-msg" class="field-error">Enter a version such as 3.12.0.</p>
+        </div>
+        <div class="field">
+            <label for="sg-in-dis">Input, disabled</label>
+            <input id="sg-in-dis" class="input" type="text" value="Read only value" disabled>
+        </div>
+        <div class="field">
+            <label for="sg-sel">Select</label>
+            <select id="sg-sel" class="select"><option>C++11</option><option>C++17</option><option>C++20</option></select>
+        </div>
+        <div class="field is-invalid">
+            <label for="sg-sel-err">Select with error</label>
+            <select id="sg-sel-err" class="select is-invalid" aria-invalid="true"><option>Choose a standard</option><option>C++11</option></select>
+            <p class="field-error">Choose a standard.</p>
+        </div>
+        <div class="field">
+            <label for="sg-sel-dis">Select, disabled</label>
+            <select id="sg-sel-dis" class="select" disabled><option>C++17</option></select>
+        </div>
+        <div class="field">
+            <label for="sg-ta">Textarea</label>
+            <textarea id="sg-ta" class="textarea" placeholder="Describe the problem"></textarea>
+        </div>
+        <div class="field is-invalid">
+            <label for="sg-ta-err">Textarea with error</label>
+            <textarea id="sg-ta-err" class="textarea is-invalid" aria-invalid="true"></textarea>
+            <p class="field-error">A description is required.</p>
+        </div>
+        <div class="field">
+            <label for="sg-ta-dis">Textarea, disabled</label>
+            <textarea id="sg-ta-dis" class="textarea" disabled>Locked</textarea>
+        </div>
+    </div>
+
+    <div class="grid grid-3" style="margin-top: 1.5rem;">
+        <div class="stack stack-sm">
+            <p class="sg-label">.checkbox</p>
+            <label class="checkbox"><input type="checkbox"> Unchecked</label>
+            <label class="checkbox"><input type="checkbox" checked> Checked</label>
+            <label class="checkbox is-invalid"><input type="checkbox"> Invalid</label>
+            <label class="checkbox"><input type="checkbox" disabled> Disabled</label>
+            <label class="checkbox"><input type="checkbox" checked disabled> Disabled, checked</label>
+        </div>
+        <div class="stack stack-sm">
+            <p class="sg-label">.radio</p>
+            <label class="radio"><input type="radio" name="sg-r"> Unselected</label>
+            <label class="radio"><input type="radio" name="sg-r" checked> Selected</label>
+            <label class="radio is-invalid"><input type="radio" name="sg-r2"> Invalid</label>
+            <label class="radio"><input type="radio" name="sg-r3" disabled> Disabled</label>
+            <label class="radio"><input type="radio" name="sg-r4" checked disabled> Disabled, selected</label>
+        </div>
+        <div class="stack stack-sm">
+            <p class="sg-label">.switch</p>
+            <label class="switch"><input type="checkbox" role="switch"> Off</label>
+            <label class="switch"><input type="checkbox" role="switch" checked> On</label>
+            <label class="switch"><input type="checkbox" role="switch" disabled> Disabled, off</label>
+            <label class="switch"><input type="checkbox" role="switch" checked disabled> Disabled, on</label>
+        </div>
+    </div>
+</section>
+
+<!-- ========================== MENUS ========================== -->
+<section class="sg-section" id="menus">
+    <h2>Dropdown and menu</h2>
+    <p class="sg-note text-muted">The prototype kit opens and closes a dropdown through <code>data-menu</code>, toggling <code>hidden</code> and <code>.is-open</code>. A closed menu carries <code>hidden</code> and is not drawn; the open state is shown here.</p>
+    <div class="grid grid-2" style="margin-top: 1rem;">
+        <div class="sg-pad-menu">
+            <p class="sg-label">.dropdown (open, with a checked item)</p>
+            <div class="dropdown">
+                <button class="btn btn-secondary" type="button" data-menu="sg-dd" aria-haspopup="menu" aria-expanded="true">C++ standard</button>
+                <div class="dropdown-menu is-open" id="sg-dd" role="menu">
+                    <p class="menu-label">Standard</p>
+                    <button class="dropdown-item" type="button" role="menuitemradio" aria-checked="false">C++11</button>
+                    <button class="dropdown-item" type="button" role="menuitemradio" aria-checked="true">C++17</button>
+                    <button class="dropdown-item" type="button" role="menuitemradio" aria-checked="false">C++20</button>
+                    <hr class="divider" style="margin: .25rem 0;">
+                    <button class="dropdown-item" type="button" role="menuitem" disabled>Disabled item</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p class="sg-label">.menu (static list)</p>
+            <div class="menu" role="menu">
+                <p class="menu-label">Section</p>
+                <a class="menu-item" href="#menus" role="menuitem" aria-current="page">Current item</a>
+                <a class="menu-item" href="#menus" role="menuitem">Item</a>
+                <button class="menu-item" type="button" role="menuitemcheckbox" aria-checked="true">Checked item</button>
+                <button class="menu-item" type="button" role="menuitem" disabled>Disabled item</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================== TABS AND DISCLOSURE ========================== -->
+<section class="sg-section" id="tabs">
+    <h2>Tabs, accordion and disclosure</h2>
+    <div class="stack">
+        <div>
+            <p class="sg-label">.tabs / .tab / .tab-panel — selected is <code>aria-selected="true"</code></p>
+            <div class="tabs" role="tablist">
+                <button class="tab" type="button" role="tab" aria-selected="true">CMake</button>
+                <button class="tab" type="button" role="tab" aria-selected="false">Package manager</button>
+                <button class="tab" type="button" role="tab" aria-selected="false">Single header</button>
+                <button class="tab" type="button" role="tab" aria-selected="false" disabled>Disabled</button>
+            </div>
+            <div class="tab-panel" role="tabpanel"><p>Panel for the selected tab.</p></div>
+        </div>
+        <div>
+            <p class="sg-label">.accordion with .disclosure (one open)</p>
+            <div class="accordion">
+                <details class="disclosure" open><summary>Is the library header-only?</summary><div class="disclosure-body"><p>Yes. Include a single header and you are done.</p></div></details>
+                <details class="disclosure"><summary>Which C++ standards are supported?</summary><div class="disclosure-body"><p>C++11 and later.</p></div></details>
+                <details class="disclosure"><summary>Where do I report a bug?</summary><div class="disclosure-body"><p>In the issue tracker.</p></div></details>
+            </div>
+        </div>
+        <div>
+            <p class="sg-label">.disclosure on its own</p>
+            <details class="disclosure"><summary>More detail</summary><div class="disclosure-body"><p>Optional detail the reader opens when needed.</p></div></details>
+        </div>
+    </div>
+</section>
+
+<!-- ========================== CONTENT ========================== -->
+<section class="sg-section" id="content">
+    <h2>Cards, badges, chips, avatars, dividers</h2>
+    <div class="stack">
+        <div class="grid grid-3">
+            <div class="card"><h3 class="card-title">Card</h3><p class="text-muted" style="margin: 0;">Static container with a hairline border.</p></div>
+            <a class="card card-interactive" href="#content" style="text-decoration: none; color: inherit;"><h3 class="card-title">Interactive card</h3><p class="text-muted" style="margin: 0;">.card-interactive — blue border on hover and focus.</p></a>
+            <div class="card"><h3 class="card-title">Card with actions</h3><div class="cluster"><button class="btn btn-primary btn-sm" type="button">Open</button><button class="btn btn-ghost btn-sm" type="button">Dismiss</button></div></div>
+        </div>
+        <div><p class="sg-label">.badge</p>
+        <div class="cluster">
+            <span class="badge">Default</span>
+            <span class="badge badge-neutral">Neutral</span>
+            <span class="badge badge-success">Success</span>
+            <span class="badge badge-warning">Warning</span>
+            <span class="badge badge-danger">Danger</span>
+        </div></div>
+        <div><p class="sg-label">.chip — static, selectable (<code>aria-pressed</code>), removable</p>
+        <div class="cluster cluster-sm">
+            <span class="chip">Static</span>
+            <button class="chip" type="button" aria-pressed="false">Unselected</button>
+            <button class="chip" type="button" aria-pressed="true">Selected</button>
+            <span class="chip">Removable <button class="chip-remove" type="button" aria-label="Remove">&times;</button></span>
+        </div></div>
+        <div><p class="sg-label">.avatar (.avatar-sm, default, .avatar-lg)</p>
+        <div class="cluster">
+            <span class="avatar avatar-sm">NL</span>
+            <span class="avatar">NL</span>
+            <span class="avatar avatar-lg">NL</span>
+        </div></div>
+        <div><p class="sg-label">.divider, .divider-vertical</p>
+            <p style="margin: 0;">Above</p><hr class="divider"><p style="margin: 0;">Below</p>
+            <div class="cluster" style="margin-top: .75rem;"><span>One</span><span class="divider-vertical"></span><span>Two</span><span class="divider-vertical"></span><span>Three</span></div>
+        </div>
+    </div>
+
+    <h3>Tables and code</h3>
+    <div class="stack">
+        <div class="table-wrap">
+            <table class="table">
+                <thead><tr><th>Function</th><th>Returns</th><th>Since</th></tr></thead>
+                <tbody>
+                    <tr><td><code>parse</code></td><td><code>basic_json</code></td><td>1.0.0</td></tr>
+                    <tr><td><code>dump</code></td><td><code>string_t</code></td><td>1.0.0</td></tr>
+                    <tr><td><code>at</code></td><td><code>reference</code></td><td>1.0.0</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <pre class="code-block"><code><span class="k">auto</span> j = <span class="t">json</span>::<span class="f">parse</span>(<span class="s">"{\"a\": 1}"</span>); <span class="c">// <span class="n">1</span> key</span></code></pre>
+    </div>
+</section>
+
+<!-- ========================== OVERLAYS ========================== -->
+<section class="sg-section" id="overlays">
+    <h2>Overlays</h2>
+    <p class="sg-note text-muted">Overlays are hidden with <code>hidden</code> and open with <code>.is-open</code> (the kit toggles both). Each is shown open inside a frame.</p>
+    <div class="stack" style="margin-top: 1rem;">
+        <div>
+            <p class="sg-label">.modal + .backdrop</p>
+            <div class="sg-frame">
+                <p>Page content behind the modal.</p>
+                <div class="backdrop is-open"></div>
+                <div class="modal is-open" role="dialog" aria-modal="true" aria-labelledby="sg-modal-title">
+                    <div class="modal-header"><h3 id="sg-modal-title">Delete this item?</h3><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Close">&times;</button></div>
+                    <div class="modal-body"><p style="margin: 0;">This cannot be undone.</p></div>
+                    <div class="modal-footer"><button class="btn btn-secondary" type="button">Cancel</button><button class="btn btn-danger" type="button">Delete</button></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p class="sg-label">.drawer (right side) + .backdrop</p>
+            <div class="sg-frame">
+                <p>Page content behind the drawer.</p>
+                <div class="backdrop is-open"></div>
+                <aside class="drawer is-open" role="dialog" aria-labelledby="sg-drawer-title">
+                    <div class="drawer-header"><h3 id="sg-drawer-title">Release details</h3><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Close">&times;</button></div>
+                    <div class="drawer-body"><p>Details shown beside the list.</p></div>
+                    <div class="drawer-footer"><button class="btn btn-primary" type="button">Done</button></div>
+                </aside>
+            </div>
+        </div>
+        <div class="grid grid-2">
+            <div>
+                <p class="sg-label">.toast (.toast-success, .toast-danger)</p>
+                <div class="sg-frame sg-frame-short" style="min-height: 13rem;">
+                    <div class="toast toast-success is-open" role="status" style="bottom: 5.5rem;">Copied to clipboard</div>
+                    <div class="toast is-open" role="status" style="bottom: .5rem;">Saved <button class="toast-action" type="button">Undo</button></div>
+                </div>
+            </div>
+            <div>
+                <p class="sg-label">.tooltip on .tooltip-anchor</p>
+                <div class="sg-frame sg-frame-short sg-pad-tip">
+                    <span class="tooltip-anchor">
+                        <button class="btn btn-secondary btn-icon" type="button" aria-label="Open external" aria-describedby="sg-tip"><span class="sg-icon" aria-hidden="true"></span></button>
+                        <span class="tooltip is-open" id="sg-tip" role="tooltip">Opens in a new window</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================== FEEDBACK ========================== -->
+<section class="sg-section" id="feedback">
+    <h2>Feedback</h2>
+    <div class="stack">
+        <div class="alert alert-info"><p class="alert-title">Info</p><p>A note the reader should know.</p></div>
+        <div class="alert alert-success"><p class="alert-title">Success</p><p>The operation finished.</p></div>
+        <div class="alert alert-warning"><p class="alert-title">Warning</p><p>This feature is deprecated.</p></div>
+        <div class="alert alert-danger"><p class="alert-title">Danger</p><p>This removes data permanently.</p></div>
+        <div class="empty-state">
+            <p class="empty-state-title">No results</p>
+            <p>Nothing matches your search. Try a different term or clear the filters.</p>
+            <button class="btn btn-secondary" type="button">Clear filters</button>
+        </div>
+        <div class="grid grid-2">
+            <div>
+                <p class="sg-label">.skeleton (text lines, .skeleton-circle)</p>
+                <div class="cluster" style="align-items: flex-start;">
+                    <span class="skeleton skeleton-circle"></span>
+                    <div class="stack stack-sm" style="flex: 1;"><span class="skeleton"></span><span class="skeleton" style="width: 70%;"></span></div>
+                </div>
+            </div>
+            <div>
+                <p class="sg-label">.spinner (.spinner-sm, default, .spinner-lg)</p>
+                <div class="cluster"><span class="spinner spinner-sm" role="status" aria-label="Loading"></span><span class="spinner" role="status" aria-label="Loading"></span><span class="spinner spinner-lg" role="status" aria-label="Loading"></span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================== APP SHELL ========================== -->
+<section class="sg-section" id="shell">
+    <h2>App shell</h2>
+    <p>Every screen sits in the shell: a blue header band with the wordmark, search and the five section links (collapsing behind a menu button on phones), one content column, and the deep-blue footer. Review it in <a href="app-shell.html"><code>app-shell.html</code></a>.</p>
+</section>
+
+<!-- ========================== GUIDELINES ========================== -->
+<section class="sg-section" id="guidelines">
+    <h2>UI guidelines</h2>
+    <div class="stack">
+        <h3>Navigation</h3>
+        <ul>
+            <li>The main navigation has exactly five sections, in this order: <strong>Home</strong> (<code>data-nav-key="home"</code>), <strong>Features</strong> (<code>features</code>), <strong>Integration</strong> (<code>integration</code>), <strong>API Documentation</strong> (<code>api</code>), <strong>Community</strong> (<code>community</code>) — because they mirror the site's top-level tabs, and readers already know that order.</li>
+            <li>The navigation sits in the blue header band (<code>--md-primary-fg-color</code>) as a row of text links; it collapses behind the menu button below the tablet width — because every screen keeps the same single band and the content gets the full width on phones.</li>
+            <li>Mark the current section with <code>aria-current="page"</code> on its link only; never mark more than one — the shell draws the marker (an underline on wide screens, a left bar in the collapsed list).</li>
+            <li>Do not add account, saved or cart links — the product has no sign-in or purchase flow.</li>
+            <li>Search is a field in the header, not a destination in the navigation — readers search from any page and the result replaces the page they are on.</li>
+            <li>Deeper structure (a section's pages, a page's table of contents) belongs in the screen's content, never in the shell — because the shell must stay identical on every screen.</li>
+            <li>The GitHub repository link (<code>nlohmann/json</code>) lives in the header (wide screens) and the footer, as an external link — it leaves the documentation.</li>
+            <li>The footer carries the repository, releases, FAQ and contribution links plus the copyright line; do not put actions in it — it is reference material only.</li>
+        </ul>
+        <h3>Layout and density</h3>
+        <ul>
+            <li>Content sits in <code>.container</code> (up to 72rem wide) inside the shell's single column; use <code>.grid</code> for card overviews — because documentation reads best in one wide column that wraps to fewer columns on its own.</li>
+            <li>Density is documentation-dense: 17 px body text, <code>--md-typeset-color</code> on the page surface, headings bold with tight negative tracking — because readers scan reference material and expect long pages.</li>
+            <li>Group blocks with <code>.stack</code> (vertical) and <code>.cluster</code> (rows of buttons, badges, chips); do not invent margins — because one rhythm keeps pages consistent.</li>
+            <li>Keep one primary action per view or dialog; everything else is <code>.btn-secondary</code> or <code>.btn-ghost</code> — because the primary button is the one place the solid brand blue appears.</li>
+            <li>Corners are small (about 6 px on blocks, 4 px on inline elements) and borders are one hairline; avoid heavy shadows except on floating layers (<code>.dropdown-menu</code>, <code>.modal</code>, <code>.drawer</code>) — because the brand is flat and technical.</li>
+        </ul>
+        <h3>Components — which class for which job</h3>
+        <ul>
+            <li>Tabular reference data (parameters, return values, versions): <code>.table</code> inside <code>.table-wrap</code> — because wide tables must scroll sideways instead of breaking the page; numbers stay on one line.</li>
+            <li>Code samples: <code>.code-block</code> with the syntax classes <code>.k .t .f .s .n .p .c</code> — they map to the <code>--nj-hl-*</code> tokens, so code reads the same as in the existing docs; inline code uses the code font only, without a box.</li>
+            <li>Overview entries that link to a section: <code>.card</code> with <code>.card-interactive</code> — the blue border on hover is the site's established hover cue.</li>
+            <li>Callouts inside a page (notes, caveats, removed or deprecated features): <code>.alert-info</code>, <code>.alert-warning</code>, <code>.alert-danger</code> — they keep the 3 px left border and soft fill of the site's admonitions; <code>.alert-success</code> confirms a result.</li>
+            <li>Library or feature status (stable, deprecated, since version): <code>.badge-neutral</code>, <code>.badge-success</code>, <code>.badge-warning</code>, <code>.badge-danger</code> — a badge labels, it never acts.</li>
+            <li>Filters and version or topic selectors: <code>.chip</code> with <code>aria-pressed</code>, or <code>.dropdown</code> with a checked <code>.dropdown-item</code> for a single choice such as the C++ standard or release — because a long list should not occupy the page.</li>
+            <li>Switching between equivalent views of the same content (for example CMake / package manager / single header): <code>.tabs</code> and <code>.tab</code> — because the site already uses synced content tabs for installation variants.</li>
+            <li>Optional detail (FAQ answers, long explanations): <code>.accordion</code> with <code>.disclosure</code> — because FAQ pages are long and most answers are not read.</li>
+            <li>Forms (search refinement, feedback, filters): <code>.field</code> with <code>.input</code>, <code>.textarea</code>, <code>.select</code>, <code>.checkbox</code>, <code>.radio</code>, <code>.switch</code>; show the problem in <code>.field-error</code> and set <code>.is-invalid</code> — the error text is in <code>--nj-string</code>, never colour alone.</li>
+            <li>Confirmations of a destructive step: <code>.modal</code> with <code>.backdrop</code> and a <code>.btn-danger</code> — only for steps that cannot be undone.</li>
+            <li>Secondary detail beside a list (a release's changes, an item's properties): <code>.drawer</code> from the right — so the reader keeps the list in view.</li>
+            <li>Short outcomes ("Copied"): <code>.toast</code>; hover explanations of an icon-only control: <code>.tooltip</code> — never put the only copy of important information in either.</li>
+            <li>Loading and empty states: <code>.skeleton</code> for content that will take the page's shape, <code>.spinner</code> for a short action, <code>.empty-state</code> for a search or list with no result — and say what to do next.</li>
+        </ul>
+        <h3>Theme</h3>
+        <ul>
+            <li>Ship both colour schemes — light (<code>default</code>) and dark (<code>slate</code>) — following the reader's system preference, as the site does; every screen must work in both.</li>
+            <li>Colour comes only from the tokens, never literal values — the schemes swap the token values, so components adapt without changes.</li>
+            <li>Brand blue (<code>--nj-blue</code>) is the one action and link colour; red (<code>--nj-red</code>, with <code>--nj-red-soft</code>) means danger or removal only; green and orange (<code>--nj-hl-string</code>, <code>--nj-hl-number</code>) mark success and warning — because red is rare and must stay meaningful.</li>
+            <li>Solid fills carry the page surface colour as text (white in light, near-black in dark), as <code>.btn-primary</code> does — keep that when composing new fills.</li>
+            <li>Typography is Inter for text and JetBrains Mono for code, identifiers and version numbers (<code>--md-text-font</code>, <code>--md-code-font</code>) — the library's API names are the product's vocabulary and must always be recognisable.</li>
+        </ul>
+        <h3>Voice and tone</h3>
+        <ul>
+            <li>Write for C++ developers: precise, plain and short — they come to answer a specific question.</li>
+            <li>Use sentence case for headings, buttons and labels ("API documentation" in prose; the navigation label stays <strong>API Documentation</strong> as in the site).</li>
+            <li>Name things exactly as the API does, in the code font (<code>basic_json</code>, <code>json_view</code>); do not paraphrase identifiers.</li>
+            <li>Buttons are verbs ("Copy", "Download"); errors say what is wrong and how to fix it, without blame or exclamation marks.</li>
+            <li>Prefer a short example over a long explanation; link onward ("See also") instead of repeating.</li>
+        </ul>
+    </div>
+</section>
+
+</div>
+</body>
+</html>

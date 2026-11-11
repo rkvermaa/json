@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en" data-md-color-scheme="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App shell — JSON for Modern C++</title>
+<link rel="stylesheet" href="../../docs/mkdocs/docs/css/brand.css">
+<link rel="stylesheet" href="prototype-utils.css">
+<style>
+    /* shell-only rules: the blue band header with the section tabs, the page column, the deep-blue footer */
+    .nj-shell { display: flex; flex-direction: column; min-height: 100vh; }
+    .nj-main { flex: 1; width: 100%; padding-block: 1.5rem 3rem; }
+
+    .nj-header {
+        background-color: var(--md-primary-fg-color);
+        color: var(--md-mermaid-sequence-number-fg-color);
+    }
+    .nj-header a:hover, .nj-footer a:hover { color: inherit; }
+    .nj-header a:focus-visible, .nj-header button:focus-visible, .nj-header input:focus-visible,
+    .nj-footer a:focus-visible {
+        outline: medium solid var(--md-mermaid-sequence-number-fg-color);
+        outline-offset: .15rem;
+    }
+    .nj-header-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .5rem .75rem;
+        padding-block: .5rem;
+    }
+    .nj-header .btn-ghost { color: var(--md-mermaid-sequence-number-fg-color); }
+    .nj-header .btn-ghost:hover:not(:disabled) {
+        background-color: color-mix(in srgb, var(--md-mermaid-sequence-number-fg-color) 14%, transparent);
+        color: var(--md-mermaid-sequence-number-fg-color);
+    }
+    .nj-bars, .nj-bars::before, .nj-bars::after {
+        display: block;
+        width: 1.25rem;
+        height: .125rem;
+        border-radius: .0625rem;
+        background-color: currentColor;
+    }
+    .nj-bars { position: relative; }
+    .nj-bars::before, .nj-bars::after { content: ""; position: absolute; left: 0; }
+    .nj-bars::before { top: -.375rem; }
+    .nj-bars::after { top: .375rem; }
+
+    .nj-brand {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
+        color: var(--md-mermaid-sequence-number-fg-color);
+        font-size: 1.125rem;
+        font-weight: 800;
+        letter-spacing: -.035em;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .nj-search { order: 3; flex: 1 1 100%; min-width: 0; }
+    .nj-search .input {
+        min-height: 2.75rem;
+        border-color: color-mix(in srgb, var(--md-mermaid-sequence-number-fg-color) 28%, transparent);
+        background-color: color-mix(in srgb, var(--md-mermaid-sequence-number-fg-color) 12%, transparent);
+        color: var(--md-mermaid-sequence-number-fg-color);
+    }
+    .nj-search .input::placeholder { color: color-mix(in srgb, var(--md-mermaid-sequence-number-fg-color) 75%, transparent); }
+    .nj-search .input:hover { border-color: color-mix(in srgb, var(--md-mermaid-sequence-number-fg-color) 55%, transparent); }
+    .nj-repo { display: none; order: 4; }
+
+    .nj-nav { order: 4; flex: 1 1 100%; }
+    .nj-nav.is-open { display: block !important; }
+    .nj-nav-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+    .nj-nav-link {
+        display: flex;
+        align-items: center;
+        min-height: 2.75rem;
+        padding: .5rem .5rem;
+        border-top: thin solid color-mix(in srgb, var(--md-mermaid-sequence-number-fg-color) 18%, transparent);
+        color: var(--md-mermaid-sequence-number-fg-color);
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        opacity: .88;
+    }
+    .nj-nav-link:hover, .nj-nav-link[aria-current="page"] { opacity: 1; }
+    .nj-nav-link[aria-current="page"] { font-weight: 700; box-shadow: inset .1875rem 0 0 var(--md-mermaid-sequence-number-fg-color); }
+
+    .nj-footer {
+        background-color: var(--md-footer-bg-color);
+        color: color-mix(in srgb, var(--md-mermaid-sequence-number-fg-color) 80%, transparent);
+        font-size: .875rem;
+    }
+    .nj-footer a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+        color: var(--md-mermaid-sequence-number-fg-color);
+    }
+    .nj-footer-bar { padding-block: 1.25rem; }
+    .nj-footer-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin: 0; padding: 0; list-style: none; }
+    .nj-footer-legal {
+        padding-block: .75rem;
+        background-color: var(--md-footer-bg-color-dark, color-mix(in srgb, var(--md-footer-bg-color) 75%, black));
+    }
+    .nj-footer-legal p { margin: 0; }
+
+    @media (min-width: 48em) {
+        .nj-menu-btn { display: none; }
+        .nj-header-bar { flex-wrap: nowrap; gap: 1rem; }
+        .nj-nav, .nj-nav[hidden] { display: block !important; order: 2; flex: 1 1 auto; }
+        .nj-nav-list { flex-direction: row; gap: .25rem; }
+        .nj-nav-link { min-height: 3rem; padding-inline: .875rem; border-top: 0; }
+        .nj-nav-link[aria-current="page"] { box-shadow: inset 0 -.125rem 0 var(--md-mermaid-sequence-number-fg-color); }
+        .nj-search { order: 3; flex: 0 1 16rem; }
+        .nj-repo { display: inline-flex; }
+    }
+</style>
+</head>
+<body>
+<div class="nj-shell" data-arc-shell>
+    <header class="nj-header" data-arc-shell-part="header">
+        <div class="container nj-header-bar">
+            <button type="button" class="btn btn-ghost btn-icon nj-menu-btn" data-toggle="main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Menu">
+                <span class="nj-bars" aria-hidden="true"></span>
+            </button>
+            <a class="nj-brand" href="#">JSON for Modern C++</a>
+            <nav id="main-nav" class="nj-nav" data-arc-shell-part="nav" aria-label="Main" hidden>
+                <ul class="nj-nav-list">
+                    <li><a class="nj-nav-link" href="#" data-nav-key="home">Home</a></li>
+                    <li><a class="nj-nav-link" href="#" data-nav-key="features">Features</a></li>
+                    <li><a class="nj-nav-link" href="#" data-nav-key="integration">Integration</a></li>
+                    <li><a class="nj-nav-link" href="#" data-nav-key="api">API Documentation</a></li>
+                    <li><a class="nj-nav-link" href="#" data-nav-key="community">Community</a></li>
+                </ul>
+            </nav>
+            <form class="nj-search" role="search" action="#">
+                <input id="shell-search" class="input" type="search" name="q" placeholder="Search" aria-label="Search the documentation">
+            </form>
+            <a class="btn btn-ghost btn-sm nj-repo" href="#">nlohmann/json</a>
+        </div>
+    </header>
+
+    <main class="container nj-main">
+        <div data-arc-content></div>
+    </main>
+
+    <footer class="nj-footer" data-arc-shell-part="footer">
+        <div class="container nj-footer-bar">
+            <nav aria-label="Footer">
+                <ul class="nj-footer-links">
+                    <li><a href="#">nlohmann/json on GitHub</a></li>
+                    <li><a href="#">Releases</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contribution guidelines</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="nj-footer-legal">
+            <div class="container">
+                <p>Copyright &copy; 2013-2026 Niels Lohmann</p>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+design_system:
+  dir: src/design-system
+  assets:
+    tokens:
+      path: docs/mkdocs/docs/css/brand.css
+      owner: project
+    fonts:
+      path: docs/mkdocs/docs/css/fonts
+      owner: project
+    prototype_utils: prototype-utils.css
+    ui_guidelines: UI-GUIDELINES.md
+    app_shell: app-shell.html
