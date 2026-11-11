@@ -1,0 +1,22 @@
+commands:
+  test: (cd docs/mkdocs && pytest) && (cd tools/astyle && pytest) && (cd tools/generate_natvis
+    && pytest) && (cd tools/serve_header && pytest)
+package_install_commands:
+  pip: pip install {requirement}
+components:
+  comp_mkdocs:
+    mode: local
+    test_command: cd docs/mkdocs && pytest
+    install_command: cd docs/mkdocs && pip install {requirement}
+  comp_astyle:
+    mode: local
+    test_command: cd tools/astyle && pytest
+    install_command: cd tools/astyle && pip install {requirement}
+  comp_generate_natvis:
+    mode: local
+    test_command: cd tools/generate_natvis && pytest
+    install_command: cd tools/generate_natvis && pip install {requirement}
+  comp_serve_header:
+    mode: local
+    test_command: cd tools/serve_header && pytest
+    install_command: cd tools/serve_header && pip install {requirement}
