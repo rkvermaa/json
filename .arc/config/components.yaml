@@ -4,19 +4,40 @@ components:
     name: Brown Field Proj C Chore 002 Define Architecture
     kind: library
     directory: .
+    stack:
+      choices:
+        language: Swift
+        package_manager: Swift Package Manager
+        testing_tool_unit: XCTest
   comp_mkdocs:
     name: Mkdocs
     kind: library
     directory: docs/mkdocs
+    stack:
+      choices:
+        language: Python
+        package_manager: pip
   comp_astyle:
     name: Astyle
     kind: library
     directory: tools/astyle
+    stack:
+      choices:
+        language: Python
+        package_manager: pip
   comp_generate_natvis:
     name: Generate Natvis
     kind: library
     directory: tools/generate_natvis
+    stack:
+      choices:
+        language: Python
+        package_manager: pip
   comp_serve_header:
     name: Serve Header
     kind: library
     directory: tools/serve_header
+    stack:
+      choices:
+        language: Python
+        package_manager: pip
